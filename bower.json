@@ -1,0 +1,25 @@
+{
+  "name": "tc-sparklines",
+  "description": "Trendy graphs",
+  "main": [
+    "dist/tc-sparklines.js",
+    "dist/tc-sparklines.css"
+  ],
+  "authors": [
+    "Toucan Toco <dev@toucantoco.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ToucanToco/sparklines",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "lodash": "3.x",
+    "d3": "3.x"
+  }
+}

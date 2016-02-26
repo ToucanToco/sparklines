@@ -1,0 +1,32 @@
+path.sparkline__area {
+  stroke-width: 0;
+  fill: #b2cdc6; }
+
+.sparkline__selection {
+  pointer-events: none; }
+
+line.sparkline__selection {
+  stroke-width: 2px;
+  stroke: #88b2a8; }
+
+circle.sparkline__selection {
+  fill: #4c4c4c; }
+
+.sparkline__tooltip-container {
+  overflow: visible; }
+
+.sparkline__tooltip {
+  direction: rtl; }
+
+.sparkline__tooltip-box {
+  direction: ltr;
+  display: inline-block;
+  white-space: nowrap;
+  text-align: right;
+  background-color: #4c4c4c;
+  color: white;
+  height: 1.2em;
+  padding: .1em .5em; }
+
+.sparkline__tooltip-label {
+  margin-right: 0.2em; }

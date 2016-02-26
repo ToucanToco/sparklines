@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Toucan Toco Sparklines</title>
+  <meta name="author" content="name">
+  <meta name="description" content="description here">
+  <meta name="keywords" content="keywords,here">
+
+  <link href="dist/tc-sparklines.css" rel="stylesheet">
+
+  <style>
+    @import url(https://fonts.googleapis.com/css?family=Montserrat|Roboto+Slab);
+
+    * {
+      font-family: 'Montserrat', sans-serif;
+      text-transform: uppercase;
+    }
+
+    .category__label-name {
+      font-family: 'Roboto Slab';
+      text-transform: none;
+    }
+  </style>
+  </head>
+
+  <body>
+    <h1>Sparklines</h1>
+
+    <a href="README.md">Documentation</a>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+    <script src="dist/tc-sparklines.js"></script>
+
+    <section class="examples">
+      <article class="example">
+        <style>
+          .category {
+            display: block;
+            position: relative;
+            padding: 20px 80px;
+          }
+
+          .category__label {
+            position: absolute;
+            font-size: 30px;
+            left: 0;
+            top: 0;
+            padding: 5px;
+          }
+
+          .category__label-name {
+            display: block;
+            margin-right: 0.3em;
+          }
+
+          .category__label-value {
+            display: block;
+            opacity: 0.3;
+          }
+        </style>
+
+        <script>
+          d3.json('examples/1.json', function (err, data) {
+            if (err) return console.warn(err);
+
+            var exampleElement = d3.selectAll('#example1')
+
+            // Adding some sample parents elements
+            var categoriesSelection = exampleElement.select('.category')
+              .data(data);
+
+            var newCategories = categoriesSelection
+              .enter()
+              .append('div')
+              .classed('category', true);
+
+            newCategoriesLabels = newCategories
+              .append('div')
+              .classed('category__label', true);
+
+            newCategoriesLabels
+              .append('span')
+              .classed('category__label-name', true)
+              .text(function (d) {
+                return d.name;
+              });
+
+            newCategoriesLabels
+              .append('span')
+              .classed('category__label-value', true)
+              .text(function (d) {
+                return d.values[d.values.length - 1].value + "€";
+              });
+
+            var sparklinesConfig = {
+              height: 100,
+              width: 250
+            };
+
+            // Creating blocks that will contain sparklines and binding data to them
+            var sparklinesSelection = newCategories
+              .append('svg')
+              .classed('sparkline', true)
+              .attr('height', sparklinesConfig.height)
+              .attr('width', sparklinesConfig.width)
+              .datum(function (d) {
+                return d.values;
+              });
+
+            // Sparklines configuration
+            var sparklines = tcSparklines()
+              .height(sparklinesConfig.height)
+              .width(sparklinesConfig.width)
+              .dateSelector('date')
+              .valueSelector('value')
+              .tooltipYOffset(sparklinesConfig.height - 25)
+              .unit('€');
+
+            // Do the magic!
+            sparklinesSelection
+              .call(sparklines);
+          });
+        </script>
+        <div id="example1"></div>
+      </article>
+    </section>
+  </body>
+</html>
