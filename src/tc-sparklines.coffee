@@ -1,14 +1,40 @@
-###
+###*
 Sparklines
 
+Called on a selection of element, this component creates a sparkline for each
+member of the selection, based on data it posess.
+
+The whole selection behaves like a group, which means the scales and the
+selection is coherent.
+
+Options:
+- `dateSelector`
+- `valueSelector`
+- `width`
+- `height`
+- `transitionDuration`
+- `unit`
+- `dateFormat`: optional formatting of dates in tooltip
+- `forceLexicalOrder`: optional, default true, set to false to force lexical
+  reordering of ordinal dates
+- `commonScatter`: false by default, use the same scatter for all sparklines
+  (y axis)
+- `selectionTimeout`: default 2000, time before tooltip disappears, 0 to disable
 
 Handlers:
 
+Notes:
+`...Managers` are internal components we use at Toucan Toco
+Sparklines are designed to work with or without them.
+
 @example
 TODO
+
 ###
 
-tcSparklines = (d3Selection) ->
+d3.toucan = {} unless d3.toucan?
+
+d3.toucan.sparklines = (d3Selection) ->
   # Default values
   dateFormat = undefined
   forceLexicalOrder = true
@@ -46,7 +72,7 @@ tcSparklines = (d3Selection) ->
         .pluck dateSelector
         .value()
 
-      xDomain = _.sortBy xDomain unless forceLexicalOrder
+      xDomain = _.sortBy xDomain if forceLexicalOrder
 
       xScale = d3.scale.ordinal()
       .domain xDomain
@@ -116,7 +142,7 @@ tcSparklines = (d3Selection) ->
       # Handles unprobable case of an invalid date
       return unless selectedPointDate in scales.x.domain()
 
-    getSelectedPoint = (d) -> _.find d, (d) -> d[dateSelector] is selectedPointDate
+    getSelectedPoint = (d) -> _.find d, (p) -> p[dateSelector] is selectedPointDate
 
     d3Selection.selectAll '.sparkline__selection'
     .remove()
@@ -165,17 +191,16 @@ tcSparklines = (d3Selection) ->
     else
       dateFormatter = _.identity
     tooltip.append 'span'
-    .classed 'sparkline__tooltip-label', true
+    .classed 'text', true
     .text (d) -> dateFormatter d[dateSelector]
 
     tooltip.append 'span'
-    .classed 'sparkline__tooltip-value', true
+    .classed 'value', true
     .text (d) -> (PrecisionManager?.format d, valueSelector) or d[valueSelector]
 
     tooltip.append 'span'
-    .classed 'sparkline__tooltip-unit', true
-    .text (d) -> (UnitManager?.get d, valueSelector) or unit or d.unit # Backwards compatibility
-
+    .classed 'unit', true
+    .text (d) -> (UnitManager?.get d, valueSelector) or unit or d.unit
 
 
   tcSparklines = (d3Selection) ->
@@ -210,10 +235,12 @@ tcSparklines = (d3Selection) ->
         .attr 'height', height
         .attr 'width', width
         .classed 'touch-rect', true
-        .attr 'fill', 'transparent'
+        .style 'fill', 'transparent'
 
-      sparklineElement.select '.sparkline__area'
-      .transition()
+      sparklineAreas = sparklineElement.select '.sparkline__area'
+      if forceLexicalOrder or scales.x.type is 'time'
+        sparklineAreas.datum (d) -> _.sortBy d, dateSelector
+      sparklineAreas.transition()
       .duration transitionDuration
       .attr 'd', sparklineArea i
 
@@ -293,5 +320,3 @@ tcSparklines = (d3Selection) ->
     return tcSparklines
 
   return tcSparklines
-
-window.tcSparklines = tcSparklines

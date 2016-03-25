@@ -9,14 +9,15 @@
     "Toucan Toco <dev@toucantoco.com>"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/ToucanToco/sparklines",
+  "homepage": "https://toucantoco.com/sparklines",
   "moduleType": [],
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "examples"
   ],
   "dependencies": {
     "lodash": "3.x",

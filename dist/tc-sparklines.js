@@ -1,20 +1,46 @@
 
-/*
+/**
 Sparklines
 
+Called on a selection of element, this component creates a sparkline for each
+member of the selection, based on data it posess.
+
+The whole selection behaves like a group, which means the scales and the
+selection is coherent.
+
+Options:
+- `dateSelector`
+- `valueSelector`
+- `width`
+- `height`
+- `transitionDuration`
+- `unit`
+- `dateFormat`: optional formatting of dates in tooltip
+- `forceLexicalOrder`: optional, default true, set to false to force lexical
+  reordering of ordinal dates
+- `commonScatter`: false by default, use the same scatter for all sparklines
+  (y axis)
+- `selectionTimeout`: default 2000, time before tooltip disappears, 0 to disable
 
 Handlers:
+
+Notes:
+`...Managers` are internal components we use at Toucan Toco
+Sparklines are designed to work with or without them.
 
 @example
 TODO
  */
 
 (function() {
-  var tcSparklines,
-    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+  var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-  tcSparklines = function(d3Selection) {
-    var _computeScales, _selectDate, commonScatter, dateFormat, dateSelector, forceLexicalOrder, height, selectionTimeout, tooltipYOffset, transitionDuration, unit, valueSelector, width;
+  if (d3.toucan == null) {
+    d3.toucan = {};
+  }
+
+  d3.toucan.sparklines = function(d3Selection) {
+    var _computeScales, _selectDate, commonScatter, dateFormat, dateSelector, forceLexicalOrder, height, selectionTimeout, tcSparklines, tooltipYOffset, transitionDuration, unit, valueSelector, width;
     dateFormat = void 0;
     forceLexicalOrder = true;
     dateSelector = 'date';
@@ -41,7 +67,7 @@ TODO
         xDomain = _(_(allSparklinesData).max(function(d) {
           return d.length;
         })).pluck(dateSelector).value();
-        if (!forceLexicalOrder) {
+        if (forceLexicalOrder) {
           xDomain = _.sortBy(xDomain);
         }
         xScale = d3.scale.ordinal().domain(xDomain).rangeRoundPoints(xRange);
@@ -99,8 +125,8 @@ TODO
           }
         }
         getSelectedPoint = function(d) {
-          return _.find(d, function(d) {
-            return d[dateSelector] === selectedPointDate;
+          return _.find(d, function(p) {
+            return p[dateSelector] === selectedPointDate;
           });
         };
         d3Selection.selectAll('.sparkline__selection').remove();
@@ -135,13 +161,13 @@ TODO
         } else {
           dateFormatter = _.identity;
         }
-        tooltip.append('span').classed('sparkline__tooltip-label', true).text(function(d) {
+        tooltip.append('span').classed('text', true).text(function(d) {
           return dateFormatter(d[dateSelector]);
         });
-        tooltip.append('span').classed('sparkline__tooltip-value', true).text(function(d) {
+        tooltip.append('span').classed('value', true).text(function(d) {
           return (typeof PrecisionManager !== "undefined" && PrecisionManager !== null ? PrecisionManager.format(d, valueSelector) : void 0) || d[valueSelector];
         });
-        return tooltip.append('span').classed('sparkline__tooltip-unit', true).text(function(d) {
+        return tooltip.append('span').classed('unit', true).text(function(d) {
           return (typeof UnitManager !== "undefined" && UnitManager !== null ? UnitManager.get(d, valueSelector) : void 0) || unit || d.unit;
         });
       };
@@ -164,13 +190,19 @@ TODO
         return scales.x(d[dateSelector]);
       }).y0(height).y1(height);
       d3Selection.each(function(d, i) {
-        var endPointerHandler, pointerHandler, sparklineElement;
+        var endPointerHandler, pointerHandler, sparklineAreas, sparklineElement;
         sparklineElement = d3.select(this);
         if (!sparklineElement.select('.sparkline__area').size()) {
           sparklineElement.append('path').classed('sparkline__area', true).attr('d', emptySparklineArea);
-          sparklineElement.append('rect').attr('height', height).attr('width', width).classed('touch-rect', true).attr('fill', 'transparent');
+          sparklineElement.append('rect').attr('height', height).attr('width', width).classed('touch-rect', true).style('fill', 'transparent');
         }
-        sparklineElement.select('.sparkline__area').transition().duration(transitionDuration).attr('d', sparklineArea(i));
+        sparklineAreas = sparklineElement.select('.sparkline__area');
+        if (forceLexicalOrder || scales.x.type === 'time') {
+          sparklineAreas.datum(function(d) {
+            return _.sortBy(d, dateSelector);
+          });
+        }
+        sparklineAreas.transition().duration(transitionDuration).attr('d', sparklineArea(i));
         pointerHandler = _selectDate(d3Selection, scales, sparklineElement, i);
         endPointerHandler = function(d) {
           return setTimeout(function() {
@@ -262,7 +294,5 @@ TODO
     };
     return tcSparklines;
   };
-
-  window.tcSparklines = tcSparklines;
 
 }).call(this);

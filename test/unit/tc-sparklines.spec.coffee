@@ -1,4 +1,4 @@
-describe 'Sparklines', ->
+describe 'd3.toucan.sparklines', ->
   DOMElement = undefined
 
   SAMPLE_DATA = [
@@ -66,10 +66,11 @@ describe 'Sparklines', ->
     return svgElement.selectAll '.sparklines-test-case__sparkline'
 
   beforeEach ->
-    @sparklines = tcSparklines()
+    @sparklines = d3.toucan.sparklines()
       .dateSelector 'date'
       .valueSelector 'val'
       .unit SAMPLE_UNIT
+      .selectionTimeout 0
 
     @clickSparklineWithIndex = (i) =>
       selectedSparkline = @sparklinesSelection
@@ -121,6 +122,9 @@ describe 'Sparklines', ->
         .should.be.true
 
     it 'should have a transparent touch/hover-enabled area', ->
+      expectedHeight = @sparklines.height()
+      expectedWidth = @sparklines.width()
+
       @sparklinesSelection
       .each (d) ->
         rect = d3.select @
@@ -129,8 +133,8 @@ describe 'Sparklines', ->
         rect.classed 'touch-rect'
         .should.be.eql true
 
-        rect.height = tcSparklines().height
-        rect.width = tcSparklines().width
+        rect.height = expectedHeight
+        rect.width = expectedWidth
 
     describe 'on selection', ->
       beforeEach ->

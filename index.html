@@ -111,12 +111,13 @@
               });
 
             // Sparklines configuration
-            var sparklines = tcSparklines()
+            var sparklines = d3.toucan.sparklines()
               .height(sparklinesConfig.height)
               .width(sparklinesConfig.width)
               .dateSelector('date')
               .valueSelector('value')
               .tooltipYOffset(sparklinesConfig.height - 25)
+              .selectionTimeout(0)
               .unit('€');
 
             // Do the magic!

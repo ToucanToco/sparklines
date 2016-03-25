@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "description": "Trendy graphs",
   "main": "dist/tc-sparklines.js",
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "3.x",
+    "d3": "3.x"
+  },
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-as-promised": "^5.2.0",
@@ -41,5 +44,5 @@
   "bugs": {
     "url": "https://github.com/ToucanToco/sparklines/issues"
   },
-  "homepage": "https://github.com/ToucanToco/sparklines#readme"
+  "homepage": "https://toucantoco.com/sparklines"
 }

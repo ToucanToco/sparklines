@@ -28,5 +28,5 @@ circle.sparkline__selection {
   height: 1.2em;
   padding: .1em .5em; }
 
-.sparkline__tooltip-label {
-  margin-right: 0.2em; }
+.sparkline__tooltip-box .text {
+  margin-right: 0.5em; }
