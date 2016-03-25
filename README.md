@@ -24,22 +24,23 @@ selection are coherent.
 
 ### Importing the library
 ```html
-  <link href="dist/tc-sparklines.css" rel="stylesheet">
+<link href="dist/tc-sparklines.css" rel="stylesheet">
 
-  <!-- Sparklines -->
-  <script src="tc-sparklines.js"></script>
+<!-- Sparklines -->
+<script src="tc-sparklines.js"></script>
 ```
 
 ### Generate your sparklines creator
-```html
-  <!-- Example -->
-  <script>
-    var sparklines = d3.toucan.sparklines()
-      .setSomeOptions(...);
+```javascript
+var sparklines = d3.toucan.sparklines()
+  .setSomeOptions(...);
+```
 
-    d3.selectAll('.sparkline-element')
-      .call(sparklines);
-  </script>
+### Apply it
+To some d3 selection that have it's data already bound
+```javascript
+d3.selectAll('.sparkline-element')
+  .call(sparklines);
 ```
 
 ## Options
