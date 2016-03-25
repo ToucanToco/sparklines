@@ -14,17 +14,24 @@ selection are coherent.
 - `d3.js`
 - `lodash`
 
+``` html
+<!-- Dependencies -->
+<script src="lodash.js"></script>
+<script src="d3.js"></script>
+```
+
 ## Usage
+
+### Importing the library
 ```html
   <link href="dist/tc-sparklines.css" rel="stylesheet">
 
-  <!-- Dependencies -->
-  <script src="lodash.js"></script>
-  <script src="d3.js"></script>
-
   <!-- Sparklines -->
   <script src="tc-sparklines.js"></script>
+```
 
+### Generate your sparklines creator
+```html
   <!-- Example -->
   <script>
     var sparklines = d3.toucan.sparklines()
