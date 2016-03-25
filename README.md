@@ -85,3 +85,12 @@ sparklines
   .height(80)
   .width(250);
 ```
+
+### Bulk setting options on creation
+Options can also be set once using an object.
+```javascript
+var sparklines = d3.toucan.sparklines({
+  height: 80,
+  width: 250
+});
+```

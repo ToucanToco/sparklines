@@ -66,11 +66,11 @@ describe 'd3.toucan.sparklines', ->
     return svgElement.selectAll '.sparklines-test-case__sparkline'
 
   beforeEach ->
-    @sparklines = d3.toucan.sparklines()
-      .dateSelector 'date'
-      .valueSelector 'val'
-      .unit SAMPLE_UNIT
-      .selectionTimeout 0
+    @sparklines = d3.toucan.sparklines
+      dateSelector: 'date'
+      valueSelector: 'val'
+      unit: SAMPLE_UNIT
+      selectionTimeout: 0
 
     @clickSparklineWithIndex = (i) =>
       selectedSparkline = @sparklinesSelection

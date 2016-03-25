@@ -8,19 +8,19 @@ Sparklines are designed to work with or without them.
 
 d3.toucan = {} unless d3.toucan?
 
-d3.toucan.sparklines = (d3Selection) ->
+d3.toucan.sparklines = (bulkOptions) ->
   # Default values
-  dateFormat = undefined
-  forceLexicalOrder = true
-  dateSelector = 'date'
-  valueSelector = 'value'
-  height = 32
-  width = 120
-  transitionDuration = 500
-  unit = ''
-  commonScatter = false
-  selectionTimeout = 2000
-  tooltipYOffset = 0
+  dateFormat = bulkOptions.dateFormat or undefined
+  forceLexicalOrder = bulkOptions.forceLexicalOrder or true
+  dateSelector = bulkOptions.dateSelector or 'date'
+  valueSelector = bulkOptions.valueSelector or 'value'
+  height = bulkOptions.height or 32
+  width = bulkOptions.width or 120
+  transitionDuration = bulkOptions.transitionDuration or 500
+  unit = bulkOptions.unit or ''
+  commonScatter = bulkOptions.commonScatter or false
+  selectionTimeout = bulkOptions.selectionTimeout or 2000
+  tooltipYOffset = bulkOptions.tooltipYOffset or 0
 
   _computeScales = (d3Selection) ->
     allSparklinesData = d3Selection.data()

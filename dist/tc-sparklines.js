@@ -14,19 +14,19 @@ Sparklines are designed to work with or without them.
     d3.toucan = {};
   }
 
-  d3.toucan.sparklines = function(d3Selection) {
+  d3.toucan.sparklines = function(bulkOptions) {
     var _computeScales, _selectDate, commonScatter, dateFormat, dateSelector, forceLexicalOrder, height, selectionTimeout, tcSparklines, tooltipYOffset, transitionDuration, unit, valueSelector, width;
-    dateFormat = void 0;
-    forceLexicalOrder = true;
-    dateSelector = 'date';
-    valueSelector = 'value';
-    height = 32;
-    width = 120;
-    transitionDuration = 500;
-    unit = '';
-    commonScatter = false;
-    selectionTimeout = 2000;
-    tooltipYOffset = 0;
+    dateFormat = bulkOptions.dateFormat || void 0;
+    forceLexicalOrder = bulkOptions.forceLexicalOrder || true;
+    dateSelector = bulkOptions.dateSelector || 'date';
+    valueSelector = bulkOptions.valueSelector || 'value';
+    height = bulkOptions.height || 32;
+    width = bulkOptions.width || 120;
+    transitionDuration = bulkOptions.transitionDuration || 500;
+    unit = bulkOptions.unit || '';
+    commonScatter = bulkOptions.commonScatter || false;
+    selectionTimeout = bulkOptions.selectionTimeout || 2000;
+    tooltipYOffset = bulkOptions.tooltipYOffset || 0;
     _computeScales = function(d3Selection) {
       var allSparklinesData, xDomain, xDomainExtent, xDomainValues, xRange, xScale, yExtents, yScales, yScatter;
       allSparklinesData = d3Selection.data();
