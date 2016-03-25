@@ -135,11 +135,6 @@ TODO
         } else {
           dateFormatter = _.identity;
         }
-        if (dateFormat) {
-          dateFormatter = d3.time.format(dateFormat);
-        } else {
-          dateFormatter = _.identity;
-        }
         tooltip.append('span').classed('sparkline__tooltip-label', true).text(function(d) {
           return dateFormatter(d[dateSelector]);
         });
