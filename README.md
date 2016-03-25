@@ -1,6 +1,8 @@
 # Sparklines
 Trendy graphs
 
+[![Circle CI](https://circleci.com/gh/ToucanToco/sparklines.svg?style=svg)](https://circleci.com/gh/ToucanToco/sparklines)
+
 Called on a selection of element, this component creates a sparkline for each
 member of the selection, based on data already bind to it.
 
