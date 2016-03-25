@@ -1,35 +1,9 @@
-###*
+###
 Sparklines
-
-Called on a selection of element, this component creates a sparkline for each
-member of the selection, based on data it posess.
-
-The whole selection behaves like a group, which means the scales and the
-selection is coherent.
-
-Options:
-- `dateSelector`
-- `valueSelector`
-- `width`
-- `height`
-- `transitionDuration`
-- `unit`
-- `dateFormat`: optional formatting of dates in tooltip
-- `forceLexicalOrder`: optional, default true, set to false to force lexical
-  reordering of ordinal dates
-- `commonScatter`: false by default, use the same scatter for all sparklines
-  (y axis)
-- `selectionTimeout`: default 2000, time before tooltip disappears, 0 to disable
-
-Handlers:
 
 Notes:
 `...Managers` are internal components we use at Toucan Toco
 Sparklines are designed to work with or without them.
-
-@example
-TODO
-
 ###
 
 d3.toucan = {} unless d3.toucan?

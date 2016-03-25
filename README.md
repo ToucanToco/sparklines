@@ -25,7 +25,7 @@ selection are coherent.
 
   <!-- Example -->
   <script>
-    var sparklines = tcSparklines()
+    var sparklines = d3.toucan.sparklines()
       .setSomeOptions(...);
 
     d3.selectAll('.sparkline-element')
