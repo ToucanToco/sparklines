@@ -2,7 +2,10 @@
   "name": "tc-sparklines",
   "version": "0.2.0",
   "description": "Trendy graphs",
-  "main": "dist/tc-sparklines.js",
+  "main": [
+    "dist/tc-sparklines.js",
+    "dist/tc-sparklines.css"
+  ],
   "dependencies": {
     "lodash": "3.x",
     "d3": "3.x"
