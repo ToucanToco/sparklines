@@ -43,7 +43,9 @@ d3.selectAll('.sparkline-element')
   .call(sparklines);
 ```
 
-## Options
+## Customization
+
+### Options
 - `dateSelector`
 - `valueSelector`
 - `width`
@@ -58,3 +60,28 @@ d3.selectAll('.sparkline-element')
 - `selectionTimeout`: default 2000, time before tooltip disappears, 0 to disable
 - `tooltipYOffset`: default 0, offset of the tooltip
   :warning: The tooltip must be positioned in the `<svg>` element bounds
+
+### Get/set an option
+Options are get/set in d3 style:
+
+Get an option by passing no arguments
+```javascript
+// Get the dateSelector value
+sparklines.dateSelector();
+// -> 'date'
+```
+
+Setting a value using the setter.
+```javascript
+// Set the dateSelector value
+sparklines.dateSelector('months');
+```
+
+The setters returns the object so it's easy to chain options.
+```javascript
+// Set the dateSelector value
+sparklines
+  .dateSelector('months')
+  .height(80)
+  .width(250);
+```
