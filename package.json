@@ -31,6 +31,7 @@
   },
   "scripts": {
     "postinstall": "bower install --production --config.interactive=false",
+    "prepublish": "gulp src:compile",
     "start": "gulp src:watch",
     "test": "karma start test/karma-unit.coffee --single-run",
     "tdd": "karma start test/karma-unit.coffee"
