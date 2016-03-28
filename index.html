@@ -23,10 +23,41 @@
         text-transform: none;
       }
     </style>
+
+    <style>
+      .category {
+        display: block;
+        padding: 10px;
+      }
+
+      .category__label,
+      .category__value {
+        font-style: normal;
+        text-transform: none;
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 120px;
+        padding: 0 10px;
+      }
+
+      .category__value {
+        opacity: 0.6;
+      }
+
+      .category__label {
+        text-align: right;
+      }
+
+      .sparkline__tooltip {
+        font-size: 0.7em;
+      }
+    </style>
   </head>
 
   <body>
-    <h1>Sparklines</h1>
+    <h1>Sparklines example</h1>
 
     <a href="README.md">Documentation</a>
 
@@ -34,99 +65,93 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
     <script src="dist/tc-sparklines.js"></script>
 
-    <section class="examples">
-      <article class="example">
-        <style>
-          .category {
-            display: block;
-            position: relative;
-            padding: 20px 80px;
-          }
+    <section class="example">
+      <button onClick="createOrUpdateSparklines()">Update</button>
+      <div id="example"></div>
 
-          .category__label {
-            position: absolute;
-            font-size: 30px;
-            left: 0;
-            top: 0;
-            padding: 5px;
-          }
-
-          .category__label-name {
-            display: block;
-            margin-right: 0.3em;
-          }
-
-          .category__label-value {
-            display: block;
-            opacity: 0.3;
-          }
-        </style>
-
-        <script>
-          d3.json('examples/1.json', function (err, data) {
-            if (err) return console.warn(err);
-
-            var exampleElement = d3.selectAll('#example1')
-
-            // Adding some sample parents elements
-            var categoriesSelection = exampleElement.select('.category')
-              .data(data);
-
-            var newCategories = categoriesSelection
-              .enter()
-              .append('div')
-              .classed('category', true);
-
-            newCategoriesLabels = newCategories
-              .append('div')
-              .classed('category__label', true);
-
-            newCategoriesLabels
-              .append('span')
-              .classed('category__label-name', true)
-              .text(function (d) {
-                return d.name;
-              });
-
-            newCategoriesLabels
-              .append('span')
-              .classed('category__label-value', true)
-              .text(function (d) {
-                return d.values[d.values.length - 1].value + "€";
-              });
-
-            var sparklinesConfig = {
-              height: 100,
-              width: 250
+      <script>
+        function generateRandomData(seriesCount, datesCount) {
+          return d3.range(seriesCount).map(function (d) {
+            return {
+              name: 'Sparkline #' + d,
+              values: d3.range(datesCount).map(function (d) {
+                return {
+                  label: d,
+                  value: Math.random(d)
+                };
+              })
             };
-
-            // Creating blocks that will contain sparklines and binding data to them
-            var sparklinesSelection = newCategories
-              .append('svg')
-              .classed('sparkline', true)
-              .attr('height', sparklinesConfig.height)
-              .attr('width', sparklinesConfig.width)
-              .datum(function (d) {
-                return d.values;
-              });
-
-            // Sparklines configuration
-            var sparklines = d3.toucan.sparklines()
-              .height(sparklinesConfig.height)
-              .width(sparklinesConfig.width)
-              .dateSelector('date')
-              .valueSelector('value')
-              .tooltipYOffset(sparklinesConfig.height - 25)
-              .selectionTimeout(0)
-              .unit('€');
-
-            // Do the magic!
-            sparklinesSelection
-              .call(sparklines);
           });
-        </script>
-        <div id="example1"></div>
-      </article>
+        }
+
+        var sparklinesConfig = {
+          height: 30,
+          width: 200
+        };
+
+        // Sparklines configuration
+        var sparklines = d3.toucan.sparklines()
+          .height(sparklinesConfig.height)
+          .width(sparklinesConfig.width)
+          .dateSelector('label')
+          .forceLexicalOrder(false)
+          .valueSelector('value')
+          .valueFormat('.2p')
+          .unit('');
+
+        function createOrUpdateSparklines() {
+          var exampleElement = d3.selectAll('#example')
+
+          // Adding some sample parents elements
+          var categoriesSelection = exampleElement.selectAll('.category')
+            .data(generateRandomData(10, 30), function(cat) {
+              return cat.name;
+            });
+
+          var newCategories = categoriesSelection
+            .enter()
+            .append('div')
+            .classed('category', true);
+
+          newCategories
+            .append('span')
+            .classed('category__label', true)
+
+          categoriesSelection.select('.category__label')
+            .text(function (d) {
+              return d.name;
+            });
+
+          // Creating blocks that will contain sparklines
+          var newSparklinesSelection = newCategories
+            .append('svg')
+            .classed('sparkline', true)
+            .attr('height', sparklinesConfig.height)
+            .attr('width', sparklinesConfig.width)
+
+          // Binding data to them
+          var sparklinesSelection = categoriesSelection.select('.sparkline')
+            .datum(function (d) {
+              return d.values;
+            });
+
+          newCategories
+            .append('span')
+            .classed('category__value', true)
+
+          var valueFormatter = d3.format('.2p');
+          categoriesSelection.select('.category__value')
+            .text(function (d) {
+              return valueFormatter(d.values[d.values.length - 1].value);
+            });
+
+          // Do the magic!
+          sparklinesSelection
+            .call(sparklines);
+        }
+
+        createOrUpdateSparklines();
+      </script>
     </section>
   </body>
 </html>
