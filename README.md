@@ -13,7 +13,6 @@ selection are coherent.
 ## Requirements
 - `d3.js`
 - `lodash`
-
 ``` html
 <!-- Dependencies -->
 <script src="lodash.js"></script>
