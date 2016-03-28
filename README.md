@@ -9,6 +9,11 @@ member of the selection, based on data already bind to it.
 The whole selection behaves like a group, which means the scales and the
 selection are coherent.
 
+## Example
+
+See this [CodePen](http://codepen.io/davinov/pen/BKZveR/)
+> <p data-height="404" data-theme-id="0" data-slug-hash="BKZveR" data-default-tab="result" data-user="davinov" class="codepen">See the Pen <a href="http://codepen.io/davinov/pen/BKZveR/">d3 sparklines</a> by David Nowinsky (<a href="http://codepen.io/davinov">@davinov</a>) on <a href="http://codepen.io">CodePen</a>.</p>
+> <script async src="//assets.codepen.io/assets/embed/ei.js"></script>
 
 ## Requirements
 - `d3.js`
