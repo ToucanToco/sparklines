@@ -1,6 +1,6 @@
 {
   "name": "tc-sparklines",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Trendy graphs",
   "main": [
     "dist/tc-sparklines.js",
