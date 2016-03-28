@@ -16,8 +16,7 @@ See this [CodePen](http://codepen.io/davinov/pen/BKZveR/)
 > <script async src="//assets.codepen.io/assets/embed/ei.js"></script>
 
 ## Requirements
-- `d3.js`
-- `lodash`
+`d3.js` and `lodash`
 ``` html
 <!-- Dependencies -->
 <script src="lodash.js"></script>
@@ -26,22 +25,19 @@ See this [CodePen](http://codepen.io/davinov/pen/BKZveR/)
 
 ## Usage
 
-### Importing the library
+Import the library
 ```html
 <link href="dist/tc-sparklines.css" rel="stylesheet">
-
-<!-- Sparklines -->
 <script src="tc-sparklines.js"></script>
 ```
 
-### Generate your sparklines creator
+Generate your sparkline creator
 ```javascript
 var sparklines = d3.toucan.sparklines()
   .setSomeOptions(...);
 ```
 
-### Apply it
-To some d3 selection that have it's data already bound
+Apply it to some d3 selection that have it's data already bound
 ```javascript
 d3.selectAll('.sparkline-element')
   .call(sparklines);
