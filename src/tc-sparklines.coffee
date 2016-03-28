@@ -8,7 +8,7 @@ Sparklines are designed to work with or without them.
 
 d3.toucan = {} unless d3.toucan?
 
-d3.toucan.sparklines = (bulkOptions) ->
+d3.toucan.sparklines = (bulkOptions = {}) ->
   # Default values
   dateFormat = bulkOptions.dateFormat or undefined
   forceLexicalOrder = bulkOptions.forceLexicalOrder or true

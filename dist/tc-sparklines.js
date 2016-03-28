@@ -16,6 +16,9 @@ Sparklines are designed to work with or without them.
 
   d3.toucan.sparklines = function(bulkOptions) {
     var _computeScales, _selectDate, commonScatter, dateFormat, dateSelector, forceLexicalOrder, height, selectionTimeout, tcSparklines, tooltipYOffset, transitionDuration, unit, valueSelector, width;
+    if (bulkOptions == null) {
+      bulkOptions = {};
+    }
     dateFormat = bulkOptions.dateFormat || void 0;
     forceLexicalOrder = bulkOptions.forceLexicalOrder || true;
     dateSelector = bulkOptions.dateSelector || 'date';
