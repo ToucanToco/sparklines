@@ -53,6 +53,7 @@ d3.selectAll('.sparkline-element')
 - `transitionDuration`
 - `unit`
 - `dateFormat`: optional formatting of dates in tooltip
+- `valueFormat`: optional formatting of values in tooltip
 - `forceLexicalOrder`: optional, default true, set to false to force lexical
   reordering of ordinal dates
 - `commonScatter`: false by default, use the same scatter for all sparklines

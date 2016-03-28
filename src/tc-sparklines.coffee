@@ -18,6 +18,7 @@ d3.toucan.sparklines = (bulkOptions = {}) ->
   width = bulkOptions.width or 120
   transitionDuration = bulkOptions.transitionDuration or 500
   unit = bulkOptions.unit or ''
+  valueFormat = bulkOptions.valueFormat or undefined
   commonScatter = bulkOptions.commonScatter or false
   selectionTimeout = bulkOptions.selectionTimeout or 2000
   tooltipYOffset = bulkOptions.tooltipYOffset or 0
@@ -168,9 +169,12 @@ d3.toucan.sparklines = (bulkOptions = {}) ->
     .classed 'text', true
     .text (d) -> dateFormatter d[dateSelector]
 
+    valueFormatter = d3.format valueFormat if valueFormat
+
     tooltip.append 'span'
     .classed 'value', true
-    .text (d) -> (PrecisionManager?.format d, valueSelector) or d[valueSelector]
+    .text (d) ->
+      (PrecisionManager?.format d, valueSelector) or (valueFormatter? d[valueSelector]) or d[valueSelector]
 
     tooltip.append 'span'
     .classed 'unit', true
@@ -276,6 +280,11 @@ d3.toucan.sparklines = (bulkOptions = {}) ->
   tcSparklines.unit = (val) ->
     return unit unless arguments.length
     unit = val
+    return tcSparklines
+
+  tcSparklines.valueFormat = (val) ->
+    return valueFormat unless arguments.length
+    valueFormat = val
     return tcSparklines
 
   tcSparklines.commonScatter = (val) ->

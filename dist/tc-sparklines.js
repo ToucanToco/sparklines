@@ -15,7 +15,7 @@ Sparklines are designed to work with or without them.
   }
 
   d3.toucan.sparklines = function(bulkOptions) {
-    var _computeScales, _selectDate, commonScatter, dateFormat, dateSelector, forceLexicalOrder, height, selectionTimeout, tcSparklines, tooltipYOffset, transitionDuration, unit, valueSelector, width;
+    var _computeScales, _selectDate, commonScatter, dateFormat, dateSelector, forceLexicalOrder, height, selectionTimeout, tcSparklines, tooltipYOffset, transitionDuration, unit, valueFormat, valueSelector, width;
     if (bulkOptions == null) {
       bulkOptions = {};
     }
@@ -27,6 +27,7 @@ Sparklines are designed to work with or without them.
     width = bulkOptions.width || 120;
     transitionDuration = bulkOptions.transitionDuration || 500;
     unit = bulkOptions.unit || '';
+    valueFormat = bulkOptions.valueFormat || void 0;
     commonScatter = bulkOptions.commonScatter || false;
     selectionTimeout = bulkOptions.selectionTimeout || 2000;
     tooltipYOffset = bulkOptions.tooltipYOffset || 0;
@@ -80,7 +81,7 @@ Sparklines are designed to work with or without them.
     };
     _selectDate = function(d3Selection, scales, sparklineElement, sparklineIndex) {
       return function() {
-        var dateFormatter, datePositionX, getSelectedPoint, leftBisectedDateIndex, positionX, rightBisectedDateIndex, selectedPoint, selectedPointDate, sparklineDates, tooltip;
+        var dateFormatter, datePositionX, getSelectedPoint, leftBisectedDateIndex, positionX, rightBisectedDateIndex, selectedPoint, selectedPointDate, sparklineDates, tooltip, valueFormatter;
         if (d3.touches(this) && d3.touches(this).length > 0) {
           positionX = d3.touches(this)[0][0];
         } else if (d3.mouse(this)) {
@@ -142,8 +143,11 @@ Sparklines are designed to work with or without them.
         tooltip.append('span').classed('text', true).text(function(d) {
           return dateFormatter(d[dateSelector]);
         });
+        if (valueFormat) {
+          valueFormatter = d3.format(valueFormat);
+        }
         tooltip.append('span').classed('value', true).text(function(d) {
-          return (typeof PrecisionManager !== "undefined" && PrecisionManager !== null ? PrecisionManager.format(d, valueSelector) : void 0) || d[valueSelector];
+          return (typeof PrecisionManager !== "undefined" && PrecisionManager !== null ? PrecisionManager.format(d, valueSelector) : void 0) || (typeof valueFormatter === "function" ? valueFormatter(d[valueSelector]) : void 0) || d[valueSelector];
         });
         return tooltip.append('span').classed('unit', true).text(function(d) {
           return (typeof UnitManager !== "undefined" && UnitManager !== null ? UnitManager.get(d, valueSelector) : void 0) || unit || d.unit;
@@ -247,6 +251,13 @@ Sparklines are designed to work with or without them.
         return unit;
       }
       unit = val;
+      return tcSparklines;
+    };
+    tcSparklines.valueFormat = function(val) {
+      if (!arguments.length) {
+        return valueFormat;
+      }
+      valueFormat = val;
       return tcSparklines;
     };
     tcSparklines.commonScatter = function(val) {
