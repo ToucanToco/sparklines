@@ -79,7 +79,7 @@ Sparklines are designed to work with or without them.
         y: yScales
       };
     };
-    _selectDate = function(d3Selection, scales, sparklineElement, sparklineIndex) {
+    _selectDate = function(d3Selection, sparklineScale, sparklineElement) {
       return function() {
         var dateFormatter, datePositionX, getSelectedPoint, leftBisectedDateIndex, positionX, rightBisectedDateIndex, selectedPoint, selectedPointDate, sparklineDates, tooltip, valueFormatter;
         if (d3.touches(this) && d3.touches(this).length > 0) {
@@ -87,9 +87,9 @@ Sparklines are designed to work with or without them.
         } else if (d3.mouse(this)) {
           positionX = d3.event.clientX - this.getBoundingClientRect().left;
         }
-        if (scales.x.type === 'time') {
+        if (sparklineScale.x.type === 'time') {
           sparklineDates = _(sparklineElement.data()[0]).pluck(dateSelector).sortBy().value();
-          datePositionX = scales.x.invert(positionX);
+          datePositionX = sparklineScale.x.invert(positionX);
           rightBisectedDateIndex = d3.bisectLeft(sparklineDates, datePositionX);
           leftBisectedDateIndex = rightBisectedDateIndex - 1;
           if (rightBisectedDateIndex > sparklineDates.length || datePositionX - sparklineDates[rightBisectedDateIndex] > datePositionX - sparklineDates[leftBisectedDateIndex]) {
@@ -98,8 +98,8 @@ Sparklines are designed to work with or without them.
             selectedPointDate = sparklineDates[rightBisectedDateIndex];
           }
         } else {
-          selectedPointDate = scales.x.domain()[d3.bisect(scales.x.range(), positionX) - 1];
-          if (indexOf.call(scales.x.domain(), selectedPointDate) < 0) {
+          selectedPointDate = sparklineScale.x.domain()[d3.bisect(sparklineScale.x.range(), positionX) - 1];
+          if (indexOf.call(sparklineScale.x.domain(), selectedPointDate) < 0) {
             return;
           }
         }
@@ -110,9 +110,9 @@ Sparklines are designed to work with or without them.
         };
         d3Selection.selectAll('.sparkline__selection').remove();
         selectedPoint = {
-          x: scales.x(selectedPointDate),
+          x: sparklineScale.x(selectedPointDate),
           y: function(d) {
-            return scales.y[sparklineIndex](getSelectedPoint(d)[valueSelector]);
+            return sparklineScale.y(getSelectedPoint(d)[valueSelector]);
           }
         };
         if (!sparklineElement.filter(getSelectedPoint).size()) {
@@ -190,7 +190,10 @@ Sparklines are designed to work with or without them.
           });
         }
         sparklineAreas.transition().duration(transitionDuration).attr('d', sparklineArea(i));
-        pointerHandler = _selectDate(d3Selection, scales, sparklineElement, i);
+        pointerHandler = _selectDate(d3Selection, {
+          x: scales.x,
+          y: scales.y[i]
+        }, sparklineElement);
         endPointerHandler = function(d) {
           return setTimeout(function() {
             return d3Selection.selectAll('.sparkline__selection').remove();

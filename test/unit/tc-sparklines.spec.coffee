@@ -72,9 +72,9 @@ describe 'd3.toucan.sparklines', ->
       unit: SAMPLE_UNIT
       selectionTimeout: 0
 
-    @clickSparklineWithIndex = (i) =>
+    @clickSparklineWithIndex = (index) =>
       selectedSparkline = @sparklinesSelection
-      .filter (d, i) -> i is 0
+      .filter (d, i) -> i is index
 
       touchRect = selectedSparkline
       .select '.touch-rect'

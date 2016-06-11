@@ -88,22 +88,22 @@ d3.toucan.sparklines = (bulkOptions = {}) ->
     x: xScale
     y: yScales
 
-  _selectDate = (d3Selection, scales, sparklineElement, sparklineIndex) -> ->
+  _selectDate = (d3Selection, sparklineScale, sparklineElement) -> ->
     if d3.touches(@) and d3.touches(@).length > 0
       positionX = d3.touches(@)[0][0]
 
     else if d3.mouse @
       positionX = d3.event.clientX - @.getBoundingClientRect().left
 
-    if scales.x.type is 'time'
+    if sparklineScale.x.type is 'time'
       sparklineDates = _ sparklineElement.data()[0]
         .pluck dateSelector
         .sortBy()
         .value()
 
-      datePositionX = scales.x.invert positionX
+      datePositionX = sparklineScale.x.invert positionX
 
-      # Find closest data e (http://bl.ocks.org/mbostock/3902569)
+      # Find closest date (http://bl.ocks.org/mbostock/3902569)
       rightBisectedDateIndex = d3.bisectLeft sparklineDates, datePositionX
       leftBisectedDateIndex = rightBisectedDateIndex - 1
       if rightBisectedDateIndex > sparklineDates.length or
@@ -113,9 +113,9 @@ d3.toucan.sparklines = (bulkOptions = {}) ->
         selectedPointDate = sparklineDates[rightBisectedDateIndex]
 
     else
-      selectedPointDate = scales.x.domain()[d3.bisect(scales.x.range(), positionX) - 1]
+      selectedPointDate = sparklineScale.x.domain()[d3.bisect(sparklineScale.x.range(), positionX) - 1]
       # Handles unprobable case of an invalid date
-      return unless selectedPointDate in scales.x.domain()
+      return unless selectedPointDate in sparklineScale.x.domain()
 
     getSelectedPoint = (d) -> _.find d, (p) -> p[dateSelector] is selectedPointDate
 
@@ -123,8 +123,8 @@ d3.toucan.sparklines = (bulkOptions = {}) ->
     .remove()
 
     selectedPoint =
-      x: scales.x selectedPointDate
-      y: (d) -> scales.y[sparklineIndex] getSelectedPoint(d)[valueSelector]
+      x: sparklineScale.x selectedPointDate
+      y: (d) -> sparklineScale.y getSelectedPoint(d)[valueSelector]
 
     # Handles the case where this particular sparkline have no data for this date
     return unless sparklineElement.filter(getSelectedPoint).size()
@@ -226,7 +226,10 @@ d3.toucan.sparklines = (bulkOptions = {}) ->
       .duration transitionDuration
       .attr 'd', sparklineArea i
 
-      pointerHandler = _selectDate d3Selection, scales, sparklineElement, i
+      pointerHandler = _selectDate d3Selection,
+        x: scales.x
+        y: scales.y[i]
+      , sparklineElement
       endPointerHandler = (d) ->
         setTimeout ->
           d3Selection.selectAll '.sparkline__selection'
