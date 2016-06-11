@@ -186,6 +186,10 @@ d3.toucan.sparklines = (bulkOptions = {}) ->
     d3Selection
     .classed 'sparkline', true
 
+    # Discard some points if there is more values than pixels
+    _.each d3Selection.data(), (_data) ->
+      _data.splice 0, _data.length - width if _data.length > width
+
     scales = _computeScales d3Selection
 
     sparklineArea = (sparklineIndex) ->

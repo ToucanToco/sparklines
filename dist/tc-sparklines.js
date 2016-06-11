@@ -160,6 +160,11 @@ Sparklines are designed to work with or without them.
         return tcSparklines;
       }
       d3Selection.classed('sparkline', true);
+      _.each(d3Selection.data(), function(_data) {
+        if (_data.length > width) {
+          return _data.splice(0, _data.length - width);
+        }
+      });
       scales = _computeScales(d3Selection);
       sparklineArea = function(sparklineIndex) {
         return d3.svg.area().x(function(d) {
