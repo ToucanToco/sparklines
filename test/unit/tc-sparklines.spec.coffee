@@ -65,6 +65,19 @@ describe 'd3.toucan.sparklines', ->
 
     return svgElement.selectAll '.sparklines-test-case__sparkline'
 
+  clickSparklineWithIndex = (sparklinesSelection, index) ->
+    selectedSparkline = sparklinesSelection
+    .filter (d, i) -> i is index
+
+    touchRect = selectedSparkline
+    .select '.touch-rect'
+    .node()
+
+    clickEvent = new MouseEvent 'click'
+    touchRect.dispatchEvent clickEvent
+
+    return selectedSparkline
+
   beforeEach ->
     @sparklines = d3.toucan.sparklines
       dateSelector: 'date'
@@ -72,18 +85,6 @@ describe 'd3.toucan.sparklines', ->
       unit: SAMPLE_UNIT
       selectionTimeout: 0
 
-    @clickSparklineWithIndex = (index) =>
-      selectedSparkline = @sparklinesSelection
-      .filter (d, i) -> i is index
-
-      touchRect = selectedSparkline
-      .select '.touch-rect'
-      .node()
-
-      clickEvent = new MouseEvent 'click'
-      touchRect.dispatchEvent clickEvent
-
-      return selectedSparkline
     return
 
   afterEach ->
@@ -148,14 +149,14 @@ describe 'd3.toucan.sparklines', ->
           selection.select '.sparkline__tooltip'
           .size().should.be.eql 1
 
-        @selectedSparkline = @clickSparklineWithIndex 0
+        @selectedSparkline = clickSparklineWithIndex @sparklinesSelection, 0
 
       it 'should draw a line, a circle and a tooltip on the correct sparkline', ->
         @assertSelectionIndicators @sparklinesSelection
         @assertSelectionIndicators @selectedSparkline
 
       it 'should update the selection if another sparkline is clicked', ->
-        @anotherSelectedSparkline = @clickSparklineWithIndex 1
+        @anotherSelectedSparkline = clickSparklineWithIndex @sparklinesSelection, 1
 
         @assertSelectionIndicators @sparklinesSelection
         @assertSelectionIndicators @anotherSelectedSparkline
@@ -175,7 +176,7 @@ describe 'd3.toucan.sparklines', ->
 
       describe 'on selection', ->
         beforeEach ->
-          @selectedSparkline = @clickSparklineWithIndex 0
+          @selectedSparkline = clickSparklineWithIndex @sparklinesSelection, 0
 
         it 'should display the date according to the specified format', ->
           @sparklinesSelection.select '.sparkline__tooltip'

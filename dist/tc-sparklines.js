@@ -146,10 +146,10 @@ Sparklines are designed to work with or without them.
         if (valueFormat) {
           valueFormatter = d3.format(valueFormat);
         }
-        tooltip.append('span').classed('value', true).text(function(d) {
+        tooltip.append('span').classed('sparkline__tooltip-value', true).text(function(d) {
           return (typeof PrecisionManager !== "undefined" && PrecisionManager !== null ? PrecisionManager.format(d, valueSelector) : void 0) || (typeof valueFormatter === "function" ? valueFormatter(d[valueSelector]) : void 0) || d[valueSelector];
         });
-        return tooltip.append('span').classed('unit', true).text(function(d) {
+        return tooltip.append('span').classed('sparkline__tooltip-unit', true).text(function(d) {
           return (typeof UnitManager !== "undefined" && UnitManager !== null ? UnitManager.get(d, valueSelector) : void 0) || unit || d.unit;
         });
       };

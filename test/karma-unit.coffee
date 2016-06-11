@@ -27,12 +27,16 @@ module.exports = (config) ->
 
     # /!\ The order is important, and frameworks are loaded in reverse order
     frameworks: [
-      'jasmine'
+      'mocha'
       'chai-as-promised'
       'sinon-chai'
       'jquery-2.1.0'
       'chai'
     ]
+
+    client:
+      mocha:
+        reporter: 'html'
 
     preprocessors: preprocessors
 

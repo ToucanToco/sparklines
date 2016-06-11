@@ -172,12 +172,12 @@ d3.toucan.sparklines = (bulkOptions = {}) ->
     valueFormatter = d3.format valueFormat if valueFormat
 
     tooltip.append 'span'
-    .classed 'value', true
+    .classed 'sparkline__tooltip-value', true
     .text (d) ->
       (PrecisionManager?.format d, valueSelector) or (valueFormatter? d[valueSelector]) or d[valueSelector]
 
     tooltip.append 'span'
-    .classed 'unit', true
+    .classed 'sparkline__tooltip-unit', true
     .text (d) -> (UnitManager?.get d, valueSelector) or unit or d.unit
 
 
