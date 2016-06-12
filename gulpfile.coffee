@@ -14,7 +14,7 @@ distDir = 'dist'
 gulp.task 'tests:compile', ->
   gulp.src testScriptsFiles
   .pipe coffee()
-  .pipe gulp.dest testDir
+  .pipe gulp.dest "#{distDir}/#{testDir}"
 
 gulp.task 'scripts:compile', ->
   gulp.src srcScriptsFiles
