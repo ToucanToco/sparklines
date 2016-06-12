@@ -1,6 +1,4 @@
 describe 'd3.toucan.sparklines', ->
-  DOMElement = undefined
-
   SAMPLE_DATA = [
     label: 'A'
     date: 1
@@ -42,12 +40,12 @@ describe 'd3.toucan.sparklines', ->
     date: new Date 2015, 8, 1
   ]
 
-  createSparklinesSelection = (data) ->
+  createSparklinesSelection = (parentElement, data) ->
     nestedData = d3.nest()
       .key (d) -> d.label
       .entries data
 
-    svgElement = d3.select document.body
+    svgElement = d3.select parentElement
       .append 'svg'
       .classed 'sparklines-test-case', true
 
@@ -79,6 +77,13 @@ describe 'd3.toucan.sparklines', ->
     return selectedSparkline
 
   beforeEach ->
+    @id = _.uniqueId 'test-'
+    @DOMElement = d3.select document.body
+      .append 'div'
+      .classed 'test-dom-container', true
+      .classed "#{@id}", true
+      .node()
+
     @sparklines = d3.toucan.sparklines
       dateSelector: 'date'
       valueSelector: 'val'
@@ -88,12 +93,16 @@ describe 'd3.toucan.sparklines', ->
     return
 
   afterEach ->
-    d3.select '.sparklines-test-case'
-    .remove()
+    testsReportsElements = document.getElementsByClassName 'test'
+    testReport = testsReportsElements[testsReportsElements.length - 1]
+    return unless testReport
+
+    testReport
+    .appendChild @DOMElement
 
   describe 'when data is valid', ->
     beforeEach ->
-      @sparklinesSelection = createSparklinesSelection SAMPLE_DATA
+      @sparklinesSelection = createSparklinesSelection @DOMElement, SAMPLE_DATA
       @sparklinesSelection.call @sparklines
 
     it 'should add path to each element of this selection', ->
@@ -171,7 +180,7 @@ describe 'd3.toucan.sparklines', ->
 
     describe 'when dates are ordered', ->
       beforeEach ->
-        @sparklinesSelection = createSparklinesSelection SAMPLE_DATA_WITH_DATES
+        @sparklinesSelection = createSparklinesSelection @DOMElement, SAMPLE_DATA_WITH_DATES
         @sparklinesSelection.call @dateSparklines
 
       describe 'on selection', ->
@@ -184,7 +193,7 @@ describe 'd3.toucan.sparklines', ->
 
       describe 'when unordered', ->
         beforeEach ->
-          @sparklinesSelection = createSparklinesSelection SAMPLE_DATA_WITH_UNORDERED_DATES
+          @sparklinesSelection = createSparklinesSelection @DOMElement, SAMPLE_DATA_WITH_UNORDERED_DATES
           @sparklinesSelection.call @dateSparklines
 
         it 'should display dates in the correct order', ->
@@ -202,7 +211,7 @@ describe 'd3.toucan.sparklines', ->
       date: 2
       val: 'blabla'
     ]
-    sparklinesSelection = createSparklinesSelection SAMPLE_INVALID_DATA
+    sparklinesSelection = createSparklinesSelection @DOMElement, SAMPLE_INVALID_DATA
     (-> sparklinesSelection.call @sparklines)
     .should.throw Error
   return
