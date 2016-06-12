@@ -8,6 +8,22 @@ describe 'd3.toucan.sparklines', ->
     date: 2
     val: 20
   ,
+    label: 'A'
+    date: 3
+    val: 7
+  ,
+    label: 'A'
+    date: 4
+    val: 12
+  ,
+    label: 'A'
+    date: 5
+    val: 7
+  ,
+    label: 'A'
+    date: 6
+    val: 10
+  ,
     label: 'B'
     date: 1
     val: 11
@@ -15,6 +31,14 @@ describe 'd3.toucan.sparklines', ->
     label: 'B'
     date: 2
     val: 22
+  ,
+    label: 'B'
+    date: 5
+    val: 19
+  ,
+    label: 'B'
+    date: 6
+    val: 14
   ]
   SAMPLE_UNIT = '%'
 
@@ -22,22 +46,38 @@ describe 'd3.toucan.sparklines', ->
   _.merge SAMPLE_DATA_WITH_DATES, SAMPLE_DATA, [
     date: new Date 2015, 8, 1
   ,
+    date: new Date 2015, 9, 1
+  ,
     date: new Date 2015, 10, 1
+  ,
+    date: new Date 2015, 11, 1
+  ,
+    date: new Date 2016, 0, 1
+  ,
+    date: new Date 2016, 1, 1
   ,
     date: new Date 2015, 8, 1
   ,
-    date: new Date 2015, 11, 1
+    date: new Date 2015, 9, 1
+  ,
+    date: new Date 2016, 0, 1
+  ,
+    date: new Date 2016, 1, 1
   ]
 
   SAMPLE_DATA_WITH_UNORDERED_DATES = []
-  _.merge SAMPLE_DATA_WITH_UNORDERED_DATES, SAMPLE_DATA, [
-    date: new Date 2015, 10, 1
+  _.merge SAMPLE_DATA_WITH_UNORDERED_DATES, SAMPLE_DATA, SAMPLE_DATA_WITH_DATES, [
+    date: new Date 2015, 9, 1
   ,
     date: new Date 2015, 8, 1
-  ,
-    date: new Date 2015, 11, 1
-  ,
-    date: new Date 2015, 8, 1
+  , {}
+  , {}
+  , {}
+  , {}
+  , {}
+  , {}
+  , {}
+  , {}
   ]
 
   createSparklinesSelection = (parentElement, data) ->
@@ -77,13 +117,6 @@ describe 'd3.toucan.sparklines', ->
     return selectedSparkline
 
   beforeEach ->
-    @id = _.uniqueId 'test-'
-    @DOMElement = d3.select document.body
-      .append 'div'
-      .classed 'test-dom-container', true
-      .classed "#{@id}", true
-      .node()
-
     @sparklines = d3.toucan.sparklines
       dateSelector: 'date'
       valueSelector: 'val'
@@ -91,14 +124,6 @@ describe 'd3.toucan.sparklines', ->
       selectionTimeout: 0
 
     return
-
-  afterEach ->
-    testsReportsElements = document.getElementsByClassName 'test'
-    testReport = testsReportsElements[testsReportsElements.length - 1]
-    return unless testReport
-
-    testReport
-    .appendChild @DOMElement
 
   describe 'when data is valid', ->
     beforeEach ->

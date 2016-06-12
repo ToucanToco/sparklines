@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Toucan Toco Sparklines</title>
+    <meta name="author" content="David Nowinsky <david@toucantoco.com>">
+    <meta name="description" content="Trendy graphs">
+    <meta name="keywords" content="sparkline,sparklines,toucan toco,toucan,toco,open-source,d3,plugin,chart,trends">
+
+    <link href="dist/tc-sparklines.css" rel="stylesheet">
+
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/mocha/2.5.3/mocha.css" rel="stylesheet" />
+
+    <style>
+      #mocha .test-dom-container {
+        display: block;
+        float: right;
+        clear: left;
+        margin: 5px;
+        padding: 15px;
+        border: 1px solid #eee;
+        max-width: 85%; /*(1)*/
+        max-width: calc(100% - 42px); /*(2)*/
+        border-bottom-color: #ddd;
+        -webkit-border-radius: 3px;
+        -webkit-box-shadow: 0 1px 3px #eee;
+        -moz-border-radius: 3px;
+        -moz-box-shadow: 0 1px 3px #eee;
+        border-radius: 3px;
+      }
+    </style>
+
+  </head>
+
+  <body>
+    <div id="mocha"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/3.5.0/chai.js" type="text/javascript"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/2.5.3/mocha.js"></script>
+
+    <script>
+      mocha.setup('bdd');
+      chai.should();
+    </script>
+
+    <script src="dist/tc-sparklines.js"></script>
+
+    <script src="test/unit/add-dom-element.js"></script>
+    <script src="test/unit/tc-sparklines.spec.js"></script>
+
+    <script>
+      mocha.checkLeaks();
+      mocha.globals(['d3', '_']);
+      mocha.run();
+    </script>
+  </body>
+</html>
