@@ -95,3 +95,7 @@ var sparklines = d3.toucan.sparklines({
   width: 250
 });
 ```
+## Test suite
+[Explore the test suite](https://rawgit.com/ToucanToco/sparklines/master/tests.html)
+
+How to run the tests? `npm test` or `npm run tdd`
