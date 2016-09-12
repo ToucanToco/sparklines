@@ -4,8 +4,9 @@
   "description": "Trendy graphs",
   "main": "dist/tc-sparklines.js",
   "dependencies": {
-    "lodash": "3.x",
-    "d3": "3.x"
+    "d3": "3.x",
+    "karma-mocha": "^1.1.1",
+    "lodash": "3.x"
   },
   "devDependencies": {
     "chai": "^3.5.0",

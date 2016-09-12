@@ -6,6 +6,8 @@ files = wiredep
 files.push "src/**/*.+(js|coffee)"
 files.push "test/unit/add-dom-element.coffee"
 files.push "test/unit/**/*.spec.coffee"
+files.push 'dist/tc-sparklines.css'
+files.push 'styles.css'
 files.push
   pattern: 'test/fixtures/**/*'
   included: false
